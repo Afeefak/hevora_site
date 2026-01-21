@@ -32,14 +32,20 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 
   return (
     <motion.span
-      className={`inline-block overflow-hidden pb-1 ${className}`}
+      /* FIX: Added overflow-visible and pb-4/py-4 buffer to prevent 
+         bold/italic font clipping */
+      className={`inline-block overflow-visible py-4 -my-4 ${className}`}
       variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
       {children.split(" ").map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
+        /* FIX: py-2 and px-1 for vertical clearance and italic slant */
+        <span
+          key={i}
+          className="inline-block overflow-hidden py-2 px-1 mr-[0.25em]"
+        >
           <motion.span variants={child} className="inline-block">
             {word === "" ? "\u00A0" : word}
           </motion.span>
@@ -83,7 +89,8 @@ export default function OurApproach() {
 
           {/* LEFT CONTENT */}
           <div className="text-center lg:text-left z-20">
-            <h2 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter italic">
+            {/* FIX: Increased leading for vertical clearance of bold characters */}
+            <h2 className="text-5xl md:text-7xl font-black text-white leading-[1.2] tracking-tighter italic">
               <TextReveal>Our Approach</TextReveal>
             </h2>
 
@@ -109,7 +116,8 @@ export default function OurApproach() {
                 color: "#20498A",
               }}
               whileTap={{ scale: 0.95 }}
-              className="mt-10 bg-[#16F88A] px-12 py-4 rounded-2xl text-[#20498A] font-black uppercase tracking-widest text-sm shadow-xl shadow-[#16F88A]/20 transition-all duration-300"
+              /* whitespace-nowrap fix */
+              className="mt-10 bg-[#16F88A] px-12 py-4 rounded-2xl text-[#20498A] font-black uppercase tracking-widest text-sm shadow-xl shadow-[#16F88A]/20 transition-all duration-300 whitespace-nowrap"
             >
               Discover Now
             </motion.button>
@@ -198,13 +206,17 @@ export default function OurApproach() {
               <p className="text-4xl font-black italic tracking-tighter">
                 2,554+
               </p>
-              <p className="text-[10px] text-[#16F88A] font-black uppercase tracking-[0.3em] mt-2">
+              {/* whitespace-nowrap for stats label */}
+              <p className="text-[10px] text-[#16F88A] font-black uppercase tracking-[0.3em] mt-2 whitespace-nowrap">
                 Success Projects
               </p>
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* THE FIX: BOTTOM FADE TRANSITION */}
+      <div className="absolute bottom-0 left-0 right-0 h-[150px] bg-gradient-to-t from-[#20498A] to-transparent pointer-events-none z-30" />
     </section>
   );
 }

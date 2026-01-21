@@ -1,34 +1,54 @@
 @import "tailwindcss";
 
+/* PREMIUM FONT IMPORT 
+  Using Plus Jakarta Sans for a high-end, modern look 
+*/
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,400;0,700;0,800;1,200;1,400;1,700;1,800&display=swap");
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #050505; /* Deep Black */
-  color: #ffffff;
-  font-family: "Inter", sans-serif;
+  /* Using the new Sage Palette Anchor */
+  /* background-color: #a5c89e; */
+  color: #fffbb1; /* Pale Yellow for text */
+
+  /* FONT CHANGE: Plus Jakarta Sans is a premium geometric sans-serif 
+     that maintains nearly identical character widths to Inter, 
+     so your padding and spacing won't break. 
+  */
+  font-family:
+    "Plus Jakarta Sans",
+    system-ui,
+    -apple-system,
+    sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar for that premium feel */
+/* Custom Scrollbar matched to Sage Palette */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #a5c89e;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #aeb877; /* Muted Olive */
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff5722;
+  background: #d8e983; /* Lime Sage Highlight */
 }
-html,
-body {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
-}
-html {
-  scroll-behavior: smooth;
+
+/* Targeting Headings specifically for that 'Italic Black' style 
+   seen in your Hero design 
+*/
+h1,
+h2,
+h3 {
+  font-weight: 800; /* Extra Bold / Black */
+  letter-spacing: -0.04em; /* Tight tracking for premium feel */
 }

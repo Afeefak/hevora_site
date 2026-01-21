@@ -108,7 +108,7 @@ export default function Hero() {
         <div className="relative mt-12">
           <StaggeredReveal delay={0.7} yOffset={60}>
             <img
-              src="/Laptop.png"
+              src="/laptop2.png"
               alt="Laptop Dashboard"
               className="w-[320px] relative z-20 drop-shadow-[0_40px_80px_rgba(32,73,138,0.5)] mix-blend-screen"
             />
@@ -170,7 +170,7 @@ export default function Hero() {
           className="absolute left-1/2 top-[75px] -translate-x-1/2 z-20"
         >
           <img
-            src="/Laptop.png"
+            src="/laptop2.png"
             alt="Laptop Dashboard"
             className="w-[820px] max-w-none relative z-20 drop-shadow-[0_60px_120px_rgba(32,73,138,0.6)] mix-blend-screen"
           />
@@ -210,4 +210,4 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 right-0 h-[120px] bg-gradient-to-b from-transparent to-[#20498A]" />
     </section>
   );
-} // can yu giive me the fu; updated code
+}

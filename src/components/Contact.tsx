@@ -258,9 +258,9 @@ export default function Contact() {
               className="h-full w-full"
             >
               <img
-                src="/contact2.jpg"
+                src="/Contact3.png"
                 alt="Contact Visual"
-                className="h-full w-full object-cover object-center opacity-70 mix-blend-screen"
+                className="h-full w-full object-cover object-center opacity-100 mix-blend-screen"
               />
             </StaggeredReveal>
           </div>

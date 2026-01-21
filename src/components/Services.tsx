@@ -32,13 +32,17 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 
   return (
     <motion.span
-      className={`inline-block overflow-hidden pb-1 ${className}`}
+      className={`inline-block overflow-visible py-4 -my-4 ${className}`}
       variants={container}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true }}
     >
       {children.split(" ").map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
+        <span
+          key={i}
+          className="inline-block overflow-hidden py-2 px-1 mr-[0.25em]"
+        >
           <motion.span variants={child} className="inline-block">
             {word === "" ? "\u00A0" : word}
           </motion.span>
@@ -95,7 +99,10 @@ const SERVICES = [
 
 export default function Services() {
   const [activeId, setActiveId] = useState("design");
-  const activeService = SERVICES.find((s) => s.id === activeId)!;
+
+  // ✅ FIX CRASH: Use a fallback (SERVICES[0]) if activeId is empty/not found.
+  // This prevents the "White Screen" when toggling menus on mobile.
+  const activeService = SERVICES.find((s) => s.id === activeId) || SERVICES[0];
 
   return (
     <section
@@ -118,11 +125,12 @@ export default function Services() {
               <button
                 onClick={() => setActiveId(isOpen ? "" : service.id)}
                 className={`
-                  w-full rounded-2xl py-5 text-sm font-black uppercase tracking-widest transition border
+                  w-full rounded-2xl py-5 text-sm font-black uppercase tracking-widest transition whitespace-nowrap overflow-visible
+                  backdrop-blur-md border shadow-lg
                   ${
                     isOpen
-                      ? "bg-[#16F88A] border-[#16F88A] text-[#20498A]"
-                      : "bg-white/5 border-white/10 text-white/60"
+                      ? "bg-[#16F88A] border-[#16F88A] text-[#20498A] shadow-[0_0_20px_rgba(22,248,138,0.4)]"
+                      : "bg-[#20498A]/40 border-white/20 text-white hover:bg-white/10" // ✅ Increased contrast here
                   }
                 `}
               >
@@ -137,27 +145,32 @@ export default function Services() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-4 rounded-[32px] bg-white/5 backdrop-blur-2xl border border-white/10 p-8 shadow-2xl text-center">
+                    {/* ✅ FIX FADED LOOK: Increased background opacity and border clarity */}
+                    <div className="mt-4 rounded-[32px] bg-[#1a3a6e]/60 backdrop-blur-xl border border-white/20 p-8 shadow-2xl text-center relative">
+                      {/* Shine effect top left */}
+                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-[32px]" />
+
                       <motion.img
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         src={service.image}
                         alt={service.title}
-                        className="mx-auto w-[240px] drop-shadow-2xl mix-blend-screen"
+                        className="mx-auto w-[240px] drop-shadow-2xl mix-blend-screen relative z-10"
                       />
 
-                      <h3 className="mt-10 text-3xl font-black text-white italic tracking-tighter">
+                      <h3 className="mt-10 text-3xl font-black text-white italic tracking-tighter leading-[1.1] overflow-visible relative z-10">
                         <TextReveal>{service.title}</TextReveal>
                       </h3>
 
-                      <div className="mt-8 grid grid-cols-1 gap-3">
+                      <div className="mt-8 grid grid-cols-1 gap-3 relative z-10">
                         {service.points.map((point, idx) => (
                           <motion.div
                             key={point}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.2 + idx * 0.1 }}
-                            className="rounded-full bg-white/10 py-4 text-xs font-black uppercase tracking-widest text-[#16F88A] border border-white/5"
+                            /* ✅ Stronger colors for pills */
+                            className="rounded-full bg-[#16F88A]/10 border border-[#16F88A]/30 py-4 text-xs font-black uppercase tracking-widest text-[#16F88A]"
                           >
                             {point}
                           </motion.div>
@@ -168,7 +181,8 @@ export default function Services() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="mt-8 text-base font-medium text-white/70 leading-relaxed"
+                        // ✅ Increased text opacity from 70% to 90%
+                        className="mt-8 text-base font-medium text-white/90 leading-relaxed relative z-10"
                       >
                         {service.description}
                       </motion.p>
@@ -194,11 +208,12 @@ export default function Services() {
               transition={{ delay: idx * 0.1 }}
               onClick={() => setActiveId(service.id)}
               className={`
-                px-10 py-4 rounded-full border transition-all relative font-black uppercase tracking-widest text-xs
+                px-10 py-4 rounded-full transition-all relative font-black uppercase tracking-widest text-xs whitespace-nowrap
+                border backdrop-blur-md
                 ${
                   activeId === service.id
-                    ? "border-[#16F88A] text-[#16F88A]"
-                    : "border-white/10 text-white/40 hover:border-white/30 bg-white/5"
+                    ? "text-[#16F88A] border-[#16F88A]/0 bg-white/10"
+                    : "text-white/70 border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30" // ✅ Increased text visibility
                 }
               `}
             >
@@ -213,21 +228,35 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Content Card - High-End Glassmorphism */}
-        <div className="rounded-[48px] bg-white/5 backdrop-blur-2xl border border-white/10 p-16 md:p-24 flex items-center gap-20 shadow-2xl min-h-[650px] relative overflow-hidden">
-          {/* Subtle Decorative Glow Inside Card */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#16F88A]/5 blur-[100px] rounded-full" />
+        {/* --- MAIN GLASS CARD --- */}
+        <div
+          className="
+            rounded-[48px] 
+            bg-gradient-to-br from-white/10 via-white/5 to-transparent 
+            backdrop-blur-3xl 
+            border border-white/20 
+            p-16 md:p-24 
+            flex items-center gap-20 
+            shadow-[0_40px_80px_rgba(0,0,0,0.4)] 
+            min-h-[650px] 
+            relative overflow-hidden
+          "
+        >
+          {/* Subtle Shine Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+
+          {/* Decorative Glow inside Glass */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#16F88A]/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeId}
+              key={activeId} // Ensures animation triggers when ID changes
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col lg:flex-row items-center gap-20 w-full relative z-10"
+              className="flex flex-col lg:flex-row items-center gap-20 w-full relative z-10 overflow-visible"
             >
-              {/* Image Reveal with Blend Fix */}
               <div className="w-[480px] shrink-0">
                 <motion.img
                   initial={{ y: 100, opacity: 0, scale: 1.1 }}
@@ -239,13 +268,11 @@ export default function Services() {
                 />
               </div>
 
-              {/* Content Reveal */}
-              <div className="flex-1">
-                <h2 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-[0.9]">
+              <div className="flex-1 overflow-visible">
+                <h2 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-[1.1] py-2 drop-shadow-lg">
                   <TextReveal key={activeId}>{activeService.title}</TextReveal>
                 </h2>
 
-                {/* Pills */}
                 <div className="flex flex-wrap gap-3 mt-10">
                   {activeService.points.map((point, idx) => (
                     <motion.span
@@ -257,19 +284,26 @@ export default function Services() {
                         type: "spring",
                         stiffness: 100,
                       }}
-                      className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-[#16F88A] shadow-sm"
+                      className="
+                        px-8 py-4 rounded-2xl 
+                        bg-[#16F88A]/10 border border-[#16F88A]/30 
+                        backdrop-blur-md 
+                        text-[10px] font-black uppercase tracking-[0.2em] text-[#16F88A] 
+                        shadow-lg shadow-black/10 whitespace-nowrap
+                        hover:bg-[#16F88A]/20 transition-colors cursor-default
+                      "
                     >
                       {point}
                     </motion.span>
                   ))}
                 </div>
 
-                {/* Description */}
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 0.8 }}
-                  className="mt-12 text-white/70 font-medium leading-relaxed text-xl max-w-xl"
+                  // ✅ Increased Text Opacity for Readability
+                  className="mt-12 text-white/90 font-medium leading-relaxed text-xl max-w-xl drop-shadow-md"
                 >
                   {activeService.description}
                 </motion.p>

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ChevronDown, Menu, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 
 // --- ANIMATION HELPERS ---
@@ -32,13 +32,13 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 
   return (
     <motion.span
-      className={`inline-block overflow-hidden ${className}`}
+      className={`inline-block overflow-visible pb-2 ${className}`}
       variants={container}
       initial="hidden"
       animate="visible"
     >
       {children.split("").map((char, i) => (
-        <span key={i} className="inline-block overflow-hidden">
+        <span key={i} className="inline-block overflow-hidden py-1">
           <motion.span variants={child} className="inline-block">
             {char === " " ? "\u00A0" : char}
           </motion.span>
@@ -48,29 +48,28 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
   );
 };
 
-// --- MAIN COMPONENT ---
+// --- MAIN NAVBAR COMPONENT ---
 
 export default function Navbar() {
-  const [openMenu, setOpenMenu] = useState<null | "services" | "case">(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { hash, pathname } = useLocation();
 
-  const dropdownVariants: Variants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, filter: "blur(4px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-    },
-    exit: {
-      opacity: 0,
-      y: 10,
-      scale: 0.95,
-      filter: "blur(4px)",
-      transition: { duration: 0.2 },
-    },
-  };
+  // --- SCROLL HANDLING LOGIC ---
+  useEffect(() => {
+    // 1. If no hash (e.g. just / or /contact), scroll to top
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+    // 2. If there is a hash (e.g., /#services), scroll to that section
+    else {
+      const element = document.getElementById(hash.replace("#", ""));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [pathname, hash]);
 
   return (
     <header className="fixed top-0 w-full z-[9999]">
@@ -80,16 +79,14 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="relative bg-[#20498A] border-b border-white/10 shadow-xl"
       >
-        {/* Desktop Gradient Pattern (Hidden on Mobile to prevent fading issues) */}
         <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-[#20498A] via-[#1a3a6e] to-[#16F88A]/20" />
-        {/* Solid Mobile Background */}
         <div className="absolute inset-0 md:hidden bg-[#20498A]" />
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          {/* LOGO */}
+          {/* LOGO - Always goes to Home top */}
           <Link
             to="/"
-            className="text-white font-black text-xl md:text-2xl tracking-tighter italic shrink-0"
+            className="text-white font-black text-xl md:text-2xl tracking-tighter italic shrink-0 leading-[1.2] whitespace-nowrap overflow-visible"
           >
             <TextReveal>Hevora Technologies.</TextReveal>
           </Link>
@@ -104,45 +101,13 @@ export default function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#16F88A] transition-all group-hover:w-full" />
             </Link>
 
-            <div
-              className="relative py-2"
-              onMouseEnter={() => setOpenMenu("services")}
-              onMouseLeave={() => setOpenMenu(null)}
+            <Link
+              to="/#services"
+              className="hover:text-[#16F88A] transition-colors relative group"
             >
-              <button className="flex items-center gap-1 hover:text-[#16F88A] transition-colors">
-                Services{" "}
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform ${
-                    openMenu === "services" ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              <AnimatePresence>
-                {openMenu === "services" && (
-                  <motion.div
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-64 rounded-2xl bg-[#20498A]/95 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl"
-                  >
-                    <Link
-                      to="/services"
-                      className="block px-8 py-5 text-white hover:bg-[#16F88A] hover:text-[#20498A] transition-all font-black border-b border-white/5"
-                    >
-                      Our Services
-                    </Link>
-                    <Link
-                      to="/services/web-development"
-                      className="block px-8 py-5 text-white hover:bg-[#16F88A] hover:text-[#20498A] transition-all font-black"
-                    >
-                      Web Systems
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+              Services
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#16F88A] transition-all group-hover:w-full" />
+            </Link>
 
             <Link
               to="/#industries"
@@ -152,45 +117,14 @@ export default function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#16F88A] transition-all group-hover:w-full" />
             </Link>
 
-            <div
-              className="relative py-2"
-              onMouseEnter={() => setOpenMenu("case")}
-              onMouseLeave={() => setOpenMenu(null)}
+            {/* ✅ FIXED: Changed from /case-studies to /#case-studies */}
+            <Link
+              to="/#case-studies"
+              className="hover:text-[#16F88A] transition-colors relative group"
             >
-              <button className="flex items-center gap-1 hover:text-[#16F88A] transition-colors">
-                Case Study{" "}
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform ${
-                    openMenu === "case" ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              <AnimatePresence>
-                {openMenu === "case" && (
-                  <motion.div
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-64 rounded-2xl bg-[#20498A]/95 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl"
-                  >
-                    <Link
-                      to="/case-studies"
-                      className="block px-8 py-5 text-white hover:bg-[#16F88A] hover:text-[#20498A] transition-all font-black border-b border-white/5"
-                    >
-                      All Work
-                    </Link>
-                    <Link
-                      to="/case-studies/healthcare"
-                      className="block px-8 py-5 text-white hover:bg-[#16F88A] hover:text-[#20498A] transition-all font-black"
-                    >
-                      Featured
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+              Case Study
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#16F88A] transition-all group-hover:w-full" />
+            </Link>
           </nav>
 
           {/* RIGHT SIDE (CTA + MOBILE TOGGLE) */}
@@ -200,6 +134,7 @@ export default function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="hidden sm:block"
             >
+              {/* CONTACT BUTTON */}
               <Link
                 to="/contact"
                 className="bg-[#16F88A] hover:bg-white text-[#20498A] px-6 md:px-8 py-2.5 md:py-3 rounded-2xl font-black text-xs md:text-sm uppercase tracking-widest transition-all shadow-xl shadow-[#16F88A]/20 whitespace-nowrap"
@@ -208,7 +143,6 @@ export default function Navbar() {
               </Link>
             </motion.div>
 
-            {/* HAMBURGER TOGGLE */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 text-white hover:text-[#16F88A] transition-all"
@@ -237,7 +171,7 @@ export default function Navbar() {
                   Home
                 </Link>
                 <Link
-                  to="/services"
+                  to="/#services"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="hover:text-[#16F88A] border-b border-white/5 pb-2"
                 >
@@ -250,8 +184,10 @@ export default function Navbar() {
                 >
                   Industries
                 </Link>
+
+                {/* ✅ FIXED: Changed from /case-studies to /#case-studies */}
                 <Link
-                  to="/case-studies"
+                  to="/#case-studies"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="hover:text-[#16F88A] border-b border-white/5 pb-2"
                 >

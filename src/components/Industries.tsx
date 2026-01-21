@@ -36,14 +36,17 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 
   return (
     <motion.span
-      className={`inline-block overflow-hidden pb-1 ${className}`}
+      className={`inline-block overflow-visible py-4 -my-4 ${className}`}
       variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
       {children.split(" ").map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
+        <span
+          key={i}
+          className="inline-block overflow-hidden py-2 px-1 mr-[0.25em]"
+        >
           <motion.span variants={child} className="inline-block">
             {word === "" ? "\u00A0" : word}
           </motion.span>
@@ -89,14 +92,14 @@ export default function Industries() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
         {/* LEFT SIDE */}
         <div className="self-start lg:sticky lg:top-32 text-center lg:text-left">
-          <h2 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
+          <h2 className="text-5xl md:text-7xl font-black text-white leading-[1.2] tracking-normal mb-8 italic">
             <TextReveal>Solutions for Every Industry</TextReveal>
           </h2>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
             viewport={{ once: true }}
             className="text-white/70 mb-10 max-w-md mx-auto lg:mx-0 leading-relaxed font-medium text-lg"
           >
@@ -108,7 +111,7 @@ export default function Industries() {
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 }}
+            transition={{ delay: 0.5 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.05 }}
             className="
@@ -125,6 +128,7 @@ export default function Industries() {
               shadow-xl shadow-[#16F88A]/20
               transition-all
               mx-auto lg:mx-0
+              whitespace-nowrap
             "
           >
             Discover Now <ArrowRight size={18} />
@@ -136,16 +140,19 @@ export default function Industries() {
           {industries.map((item, index) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, x: 60, filter: "blur(10px)" }}
+              /* UPDATED: Reduced initial X offset and Blur for faster perceived appearance */
+              initial={{ opacity: 0, x: 40, filter: "blur(8px)" }}
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.2 }}
+              /* UPDATED: 'margin: -50px' triggers the animation slightly sooner as you scroll */
+              viewport={{ once: true, margin: "-50px" }}
               transition={{
                 type: "spring",
-                damping: 25,
-                stiffness: 40,
-                delay: index * 0.15,
+                damping: 20, // Reduced bounce
+                stiffness: 70, // Increased speed (was 40)
+                mass: 1,
+                delay: index * 0.08, // UPDATED: Reduced delay (was 0.15) for faster stagger
               }}
-              whileHover={{ x: -15, borderColor: "rgba(255, 255, 255, 0.3)" }}
+              whileHover={{ x: -10, borderColor: "rgba(255, 255, 255, 0.4)" }}
               className="
                 group
                 flex items-center justify-between gap-5
@@ -156,12 +163,12 @@ export default function Industries() {
                 p-6
                 shadow-2xl
                 transition-all
-                relative overflow-hidden
+                relative overflow-visible
               "
             >
-              {/* Text */}
-              <div className="relative z-10">
-                <h3 className="text-xl md:text-3xl font-black text-white tracking-tighter italic group-hover:text-[#16F88A] transition-colors mb-2">
+              {/* Text Container */}
+              <div className="relative z-10 overflow-visible">
+                <h3 className="text-xl md:text-3xl font-black text-white tracking-tight italic group-hover:text-[#16F88A] transition-colors mb-2 pt-1 leading-none">
                   {item.title}
                 </h3>
                 <p className="text-sm font-bold text-white/40 max-w-xs group-hover:text-white/60 transition-colors">
