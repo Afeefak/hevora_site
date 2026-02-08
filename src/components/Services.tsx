@@ -32,17 +32,14 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 
   return (
     <motion.span
-      className={`inline-block overflow-visible py-4 -my-4 ${className}`}
+      className={`inline-block overflow-visible py-2 ${className}`}
       variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
       {children.split(" ").map((word, i) => (
-        <span
-          key={i}
-          className="inline-block overflow-hidden py-2 px-1 mr-[0.25em]"
-        >
+        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
           <motion.span variants={child} className="inline-block">
             {word === "" ? "\u00A0" : word}
           </motion.span>
@@ -58,34 +55,34 @@ const SERVICES = [
   {
     id: "design",
     title: "Evaluation & Design",
-    image: "/service1.png",
+    image: "/Evaluation&Design.png",
     points: ["Product Design", "UI Review", "Branding"],
     description:
-      "Strategic evaluation and user-centric design to ensure your digital product leads the market with style.",
+      "Strategic evaluation and user-centric design to ensure your digital product leads the market.",
   },
   {
     id: "software",
     title: "Custom Software",
-    image: "/service2.png",
+    image: "/CustomSoftware.png",
     points: ["Web Apps", "Enterprise Solutions"],
     description:
-      "Custom software solutions built for scalability, high performance, and long-term business growth.",
+      "Custom software solutions built for scalability, high performance, and long-term growth.",
   },
   {
     id: "web",
     title: "Web Development",
-    image: "/service3.png",
+    image: "/WebDevelopment.png",
     points: ["Frontend", "Backend"],
     description:
-      "Modern web applications using cutting-edge technologies for a seamless, lightning-fast user experience.",
+      "Modern web applications using cutting-edge tech for lightning-fast user experience.",
   },
   {
     id: "mobile",
     title: "Mobile Development",
-    image: "/service4.png",
+    image: "/MobileDevelopment.png",
     points: ["Android App", "iOS App"],
     description:
-      "High-performance native and cross-platform mobile applications tailored for your unique user base.",
+      "High-performance native and cross-platform mobile applications tailored for you.",
   },
   {
     id: "support",
@@ -93,223 +90,165 @@ const SERVICES = [
     image: "/service5.png",
     points: ["Monitoring", "Updates"],
     description:
-      "Reliable post-launch maintenance, 24/7 monitoring, and continuous system improvements.",
+      "Reliable post-launch maintenance, 24/7 monitoring, and system improvements.",
   },
 ];
 
 export default function Services() {
   const [activeId, setActiveId] = useState("design");
-
-  // ✅ FIX CRASH: Use a fallback (SERVICES[0]) if activeId is empty/not found.
-  // This prevents the "White Screen" when toggling menus on mobile.
   const activeService = SERVICES.find((s) => s.id === activeId) || SERVICES[0];
 
   return (
     <section
       id="services"
-      className="relative bg-[#20498A] py-32 overflow-hidden"
+      className="relative bg-[#20498A] py-24 lg:py-40 overflow-hidden"
     >
-      {/* Universal Hero-Style Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#20498A] via-[#1a3a6e] to-[#16F88A]/20" />
+      {/* Background Lighting */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1a3a6e] to-[#20498A]" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#16F88A]/5 blur-[140px] rounded-full pointer-events-none" />
 
-      {/* Brand Radial Glow */}
-      <div className="absolute -left-[10%] top-1/4 w-[600px] h-[600px] bg-[#16F88A]/10 blur-[120px] rounded-full pointer-events-none" />
-
-      {/* ================= MOBILE ================= */}
-      <div className="relative z-10 lg:hidden px-6 space-y-4">
-        {SERVICES.map((service) => {
-          const isOpen = activeId === service.id;
-
-          return (
-            <div key={service.id}>
-              <button
-                onClick={() => setActiveId(isOpen ? "" : service.id)}
-                className={`
-                  w-full rounded-2xl py-5 text-sm font-black uppercase tracking-widest transition whitespace-nowrap overflow-visible
-                  backdrop-blur-md border shadow-lg
-                  ${
-                    isOpen
-                      ? "bg-[#16F88A] border-[#16F88A] text-[#20498A] shadow-[0_0_20px_rgba(22,248,138,0.4)]"
-                      : "bg-[#20498A]/40 border-white/20 text-white hover:bg-white/10" // ✅ Increased contrast here
-                  }
-                `}
+      {/* ================= MOBILE VIEW (ENHANCED) ================= */}
+      <div className="relative z-10 lg:hidden px-6 space-y-12">
+        {SERVICES.map((service, idx) => (
+          <motion.div
+            key={service.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: idx * 0.1 }}
+            className="relative group"
+          >
+            {/* The Main Glass Card for Mobile */}
+            <div className="relative rounded-[40px] bg-white/5 border border-white/10 p-8 backdrop-blur-xl shadow-2xl overflow-hidden">
+              {/* Floating Image Container - Now larger and more prominent */}
+              <motion.div
+                animate={{ y: [0, -15, 0] }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="relative w-full aspect-video rounded-[24px] overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-transparent shadow-inner mb-8"
               >
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover mix-blend-screen scale-110 brightness-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#20498A]/40 to-transparent pointer-events-none" />
+              </motion.div>
+
+              {/* Title & Description */}
+              <h3 className="text-3xl font-black text-white italic tracking-tighter leading-tight mb-4">
                 {service.title}
-              </button>
+              </h3>
 
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
+              <div className="flex flex-wrap gap-2 mb-6">
+                {service.points.map((p) => (
+                  <span
+                    key={p}
+                    className="px-3 py-1.5 rounded-lg bg-[#16F88A]/10 border border-[#16F88A]/20 text-[9px] font-black text-[#16F88A] uppercase tracking-wider"
                   >
-                    {/* ✅ FIX FADED LOOK: Increased background opacity and border clarity */}
-                    <div className="mt-4 rounded-[32px] bg-[#1a3a6e]/60 backdrop-blur-xl border border-white/20 p-8 shadow-2xl text-center relative">
-                      {/* Shine effect top left */}
-                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-[32px]" />
+                    {p}
+                  </span>
+                ))}
+              </div>
 
-                      <motion.img
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        src={service.image}
-                        alt={service.title}
-                        className="mx-auto w-[240px] drop-shadow-2xl mix-blend-screen relative z-10"
-                      />
+              <p className="text-white/70 text-base leading-relaxed font-medium">
+                {service.description}
+              </p>
 
-                      <h3 className="mt-10 text-3xl font-black text-white italic tracking-tighter leading-[1.1] overflow-visible relative z-10">
-                        <TextReveal>{service.title}</TextReveal>
-                      </h3>
-
-                      <div className="mt-8 grid grid-cols-1 gap-3 relative z-10">
-                        {service.points.map((point, idx) => (
-                          <motion.div
-                            key={point}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 + idx * 0.1 }}
-                            /* ✅ Stronger colors for pills */
-                            className="rounded-full bg-[#16F88A]/10 border border-[#16F88A]/30 py-4 text-xs font-black uppercase tracking-widest text-[#16F88A]"
-                          >
-                            {point}
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        // ✅ Increased text opacity from 70% to 90%
-                        className="mt-8 text-base font-medium text-white/90 leading-relaxed relative z-10"
-                      >
-                        {service.description}
-                      </motion.p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Decorative Glow */}
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#16F88A]/10 blur-3xl rounded-full" />
             </div>
-          );
-        })}
+          </motion.div>
+        ))}
       </div>
 
-      {/* ================= DESKTOP ================= */}
+      {/* ================= DESKTOP VIEW ================= */}
       <div className="relative z-10 hidden lg:block px-6 max-w-7xl mx-auto">
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mt-24 mb-20">
-          {SERVICES.map((service, idx) => (
-            <motion.button
-              key={service.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => setActiveId(service.id)}
-              className={`
-                px-10 py-4 rounded-full transition-all relative font-black uppercase tracking-widest text-xs whitespace-nowrap
-                border backdrop-blur-md
-                ${
-                  activeId === service.id
-                    ? "text-[#16F88A] border-[#16F88A]/0 bg-white/10"
-                    : "text-white/70 border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30" // ✅ Increased text visibility
-                }
-              `}
+        {/* TAB NAVIGATION: More space from "Our Code" */}
+        <div className="flex justify-center gap-4 mt-32 mb-24">
+          {SERVICES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setActiveId(s.id)}
+              className={`px-10 py-4 rounded-full text-[11px] font-black uppercase tracking-[0.2em] transition-all border relative overflow-hidden group ${
+                activeId === s.id
+                  ? "bg-[#16F88A] border-[#16F88A] text-[#20498A] shadow-[0_10px_30px_rgba(22,248,138,0.3)]"
+                  : "bg-white/5 border-white/10 text-white/50 hover:text-white hover:border-white/30"
+              }`}
             >
-              {service.title}
-              {activeId === service.id && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 rounded-full border-2 border-[#16F88A] shadow-[0_0_20px_rgba(22,248,138,0.3)]"
-                />
-              )}
-            </motion.button>
+              <span className="relative z-10">{s.title}</span>
+            </button>
           ))}
         </div>
 
-        {/* --- MAIN GLASS CARD --- */}
-        <div
-          className="
-            rounded-[48px] 
-            bg-gradient-to-br from-white/10 via-white/5 to-transparent 
-            backdrop-blur-3xl 
-            border border-white/20 
-            p-16 md:p-24 
-            flex items-center gap-20 
-            shadow-[0_40px_80px_rgba(0,0,0,0.4)] 
-            min-h-[650px] 
-            relative overflow-hidden
-          "
-        >
-          {/* Subtle Shine Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+        <div className="grid grid-cols-2 gap-20 items-center">
+          {/* IMAGE SIDE */}
+          <div className="relative perspective-1000">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeId}
+                initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
+                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                exit={{ opacity: 0, scale: 0.9, rotateY: -15 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <motion.div
+                  animate={{ y: [0, -25, 0] }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="relative rounded-[60px] overflow-hidden border border-white/20 bg-gradient-to-br from-white/10 to-transparent p-3 backdrop-blur-md shadow-[0_40px_80px_rgba(0,0,0,0.4)]"
+                >
+                  <img
+                    src={activeService.image}
+                    alt={activeService.title}
+                    className="w-full h-auto rounded-[50px] mix-blend-screen brightness-110 contrast-105"
+                  />
+                </motion.div>
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/30 blur-3xl rounded-full" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-          {/* Decorative Glow inside Glass */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#16F88A]/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId} // Ensures animation triggers when ID changes
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col lg:flex-row items-center gap-20 w-full relative z-10 overflow-visible"
-            >
-              <div className="w-[480px] shrink-0">
-                <motion.img
-                  initial={{ y: 100, opacity: 0, scale: 1.1 }}
-                  animate={{ y: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  src={activeService.image}
-                  alt={activeService.title}
-                  className="w-full drop-shadow-2xl mix-blend-screen"
-                />
-              </div>
-
-              <div className="flex-1 overflow-visible">
-                <h2 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-[1.1] py-2 drop-shadow-lg">
+          {/* TEXT SIDE */}
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeId}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h2 className="text-7xl font-black text-white italic tracking-tighter leading-[0.9] mb-12">
                   <TextReveal key={activeId}>{activeService.title}</TextReveal>
                 </h2>
 
-                <div className="flex flex-wrap gap-3 mt-10">
-                  {activeService.points.map((point, idx) => (
+                <div className="flex flex-wrap gap-3 mb-12">
+                  {activeService.points.map((p, idx) => (
                     <motion.span
-                      key={point}
-                      initial={{ opacity: 0, y: 20 }}
+                      key={p}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        delay: 0.4 + idx * 0.1,
-                        type: "spring",
-                        stiffness: 100,
-                      }}
-                      className="
-                        px-8 py-4 rounded-2xl 
-                        bg-[#16F88A]/10 border border-[#16F88A]/30 
-                        backdrop-blur-md 
-                        text-[10px] font-black uppercase tracking-[0.2em] text-[#16F88A] 
-                        shadow-lg shadow-black/10 whitespace-nowrap
-                        hover:bg-[#16F88A]/20 transition-colors cursor-default
-                      "
+                      transition={{ delay: 0.4 + idx * 0.1 }}
+                      className="px-8 py-4 rounded-2xl bg-[#16F88A]/10 border border-[#16F88A]/30 text-[10px] font-black text-[#16F88A] uppercase tracking-[0.15em]"
                     >
-                      {point}
+                      {p}
                     </motion.span>
                   ))}
                 </div>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                  // ✅ Increased Text Opacity for Readability
-                  className="mt-12 text-white/90 font-medium leading-relaxed text-xl max-w-xl drop-shadow-md"
-                >
+                <p className="text-2xl text-white/90 font-medium leading-relaxed max-w-xl">
                   {activeService.description}
-                </motion.p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

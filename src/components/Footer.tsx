@@ -1,6 +1,17 @@
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 
 export default function Footer() {
+  const socialLinks = [
+    {
+      Icon: Linkedin,
+      href: "https://www.linkedin.com/company/hevora-tech/",
+    },
+    {
+      Icon: Instagram,
+      href: "https://www.instagram.com/hevoratechnologies?igsh=ejBsbjd4YjFtczh2",
+    },
+  ];
+
   return (
     <footer className="relative bg-[#20498A] text-white pt-24 pb-12 overflow-hidden border-t border-white/10">
       {/* Universal Hero-Style Background Pattern */}
@@ -21,10 +32,12 @@ export default function Footer() {
               precision and code.
             </p>
             <div className="flex gap-4">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
+              {socialLinks.map(({ Icon, href }, index) => (
                 <a
                   key={index}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#16F88A] hover:text-[#20498A] transition-all duration-300"
                 >
                   <Icon size={18} />
@@ -44,7 +57,7 @@ export default function Footer() {
                   href="#"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Home Base
+                  Home
                 </a>
               </li>
               <li>
@@ -52,7 +65,7 @@ export default function Footer() {
                   href="#"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Case Portfolios
+                  Services
                 </a>
               </li>
               <li>
@@ -60,7 +73,7 @@ export default function Footer() {
                   href="#"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Core Services
+                  Industries
                 </a>
               </li>
               <li>
@@ -68,7 +81,7 @@ export default function Footer() {
                   href="#"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Our Story
+                  Case Study
                 </a>
               </li>
             </ul>
@@ -125,21 +138,29 @@ export default function Footer() {
                 <span className="text-[10px] text-white/40 mb-1 uppercase tracking-widest">
                   Phone
                 </span>
-                <span className="text-white">(105) 115-2920</span>
+                <a
+                  href="tel:9037094071"
+                  className="text-white hover:text-[#16F88A] transition-colors"
+                >
+                  9037094071
+                </a>
               </li>
               <li className="flex flex-col">
                 <span className="text-[10px] text-white/40 mb-1 uppercase tracking-widest">
                   HQ Address
                 </span>
-                <span className="text-white">201 Air Street, 3rd Floor</span>
+                <span className="text-white"></span>
               </li>
               <li className="flex flex-col">
                 <span className="text-[10px] text-white/40 mb-1 uppercase tracking-widest">
                   Inquiries
                 </span>
-                <span className="text-[#16F88A] hover:underline cursor-pointer">
-                  support@hevora.com
-                </span>
+                <a
+                  href="mailto:hevoratechnologies@gmail.com"
+                  className="text-[#16F88A] hover:underline"
+                >
+                  hevoratechnologies@gmail.com
+                </a>
               </li>
             </ul>
           </div>

@@ -135,7 +135,7 @@ export default function Hero() {
           <div className="relative mt-6 mb-16 w-full max-w-sm">
             <div className="relative flex items-center justify-center gap-4 rounded-full px-8 py-5 border border-white/20 bg-gradient-to-r from-[#20498A]/40 to-[#16F88A]/40 backdrop-blur-md">
               <span className="text-4xl font-black text-white italic tracking-tighter">
-                12+
+                2+
               </span>
               <span className="text-white/80 text-[10px] font-black uppercase tracking-widest leading-tight text-left">
                 Years Of <br /> Experience
@@ -198,7 +198,7 @@ export default function Hero() {
           className="absolute right-[120px] bottom-[140px] w-[380px] h-[100px] flex items-center gap-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-2xl px-10 shadow-2xl shadow-black/20"
         >
           <span className="text-[56px] font-black text-white leading-none italic tracking-tighter">
-            12+
+            2+
           </span>
           <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] leading-tight">
             Years Of <br /> Experience

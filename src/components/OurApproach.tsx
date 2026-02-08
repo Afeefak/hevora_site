@@ -132,9 +132,7 @@ export default function OurApproach() {
               className="bg-white/10 border border-white/20 backdrop-blur-xl rounded-[32px] px-12 py-8 text-white text-center shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-[#16F88A]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <p className="text-5xl font-black tracking-tighter italic">
-                2,554+
-              </p>
+              <p className="text-5xl font-black tracking-tighter italic">14+</p>
               <p className="text-xs text-[#16F88A] font-black uppercase tracking-widest mt-2">
                 Success Projects
               </p>
@@ -144,7 +142,7 @@ export default function OurApproach() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              src="/phones.png"
+              src="/phone1.png"
               alt="Phones"
               className="w-[280px] drop-shadow-[0_40px_80px_rgba(0,0,0,0.4)] mix-blend-screen"
             />
@@ -154,7 +152,7 @@ export default function OurApproach() {
           <div className="relative hidden lg:block h-full min-h-[400px]">
             {/* PHONES IMAGE */}
             <motion.img
-              src="/phones.png"
+              src="/phone1.png"
               alt="Phones"
               initial={{ opacity: 0, x: 100, rotate: 5 }}
               whileInView={{ opacity: 1, x: 0, rotate: 0 }}
@@ -203,9 +201,7 @@ export default function OurApproach() {
                 border border-white/10
               "
             >
-              <p className="text-4xl font-black italic tracking-tighter">
-                2,554+
-              </p>
+              <p className="text-4xl font-black italic tracking-tighter">14+</p>
               {/* whitespace-nowrap for stats label */}
               <p className="text-[10px] text-[#16F88A] font-black uppercase tracking-[0.3em] mt-2 whitespace-nowrap">
                 Success Projects
