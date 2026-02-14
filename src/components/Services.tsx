@@ -50,12 +50,12 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
 };
 
 // --- DATA ---
-
+const base = import.meta.env.BASE_URL;
 const SERVICES = [
   {
     id: "design",
     title: "Evaluation & Design",
-    image: "/Evaluation&Design.png",
+    image: base + "images/EvaluationDesign.png",
     points: ["Product Design", "UI Review", "Branding"],
     description:
       "Strategic evaluation and user-centric design to ensure your digital product leads the market.",
@@ -63,7 +63,7 @@ const SERVICES = [
   {
     id: "software",
     title: "Custom Software",
-    image: "/CustomSoftware.png",
+    image: base + "images/CustomSoftware.png",
     points: ["Web Apps", "Enterprise Solutions"],
     description:
       "Custom software solutions built for scalability, high performance, and long-term growth.",
@@ -71,7 +71,7 @@ const SERVICES = [
   {
     id: "web",
     title: "Web Development",
-    image: "/WebDevelopment.png",
+    image: base + "images/WebDevelopment.png",
     points: ["Frontend", "Backend"],
     description:
       "Modern web applications using cutting-edge tech for lightning-fast user experience.",
@@ -79,7 +79,7 @@ const SERVICES = [
   {
     id: "mobile",
     title: "Mobile Development",
-    image: "/MobileDevelopment.png",
+    image: base + "images/MobileDevelopment.png",
     points: ["Android App", "iOS App"],
     description:
       "High-performance native and cross-platform mobile applications tailored for you.",
@@ -87,7 +87,7 @@ const SERVICES = [
   {
     id: "support",
     title: "Maintenance & Support",
-    image: "/service5.png",
+    image: base + "images/service5.png",
     points: ["Monitoring", "Updates"],
     description:
       "Reliable post-launch maintenance, 24/7 monitoring, and system improvements.",

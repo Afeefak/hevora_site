@@ -307,7 +307,7 @@ export default function Contact() {
               className="h-full w-full"
             >
               <img
-                src="/Contact3.png"
+                src={import.meta.env.BASE_URL + "images/Contact3.png"}
                 alt="Contact Visual"
                 className="h-full w-full object-cover object-center opacity-100 mix-blend-screen"
               />

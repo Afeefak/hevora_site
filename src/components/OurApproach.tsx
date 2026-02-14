@@ -142,7 +142,7 @@ export default function OurApproach() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              src="/phone1.png"
+              src={import.meta.env.BASE_URL + "images/phone1.png"}
               alt="Phones"
               className="w-[280px] drop-shadow-[0_40px_80px_rgba(0,0,0,0.4)] mix-blend-screen"
             />
@@ -152,7 +152,7 @@ export default function OurApproach() {
           <div className="relative hidden lg:block h-full min-h-[400px]">
             {/* PHONES IMAGE */}
             <motion.img
-              src="/phone1.png"
+              src={import.meta.env.BASE_URL + "images/phone1.png"}
               alt="Phones"
               initial={{ opacity: 0, x: 100, rotate: 5 }}
               whileInView={{ opacity: 1, x: 0, rotate: 0 }}

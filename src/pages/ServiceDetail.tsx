@@ -76,7 +76,7 @@ export default function ServiceDetail() {
           <div className="relative">
             {/* IMAGE — ABSOLUTE */}
             <img
-              src="/phones.png"
+              src={import.meta.env.BASE_URL + "phone1.png"}
               alt="Phones"
               className="
           absolute
