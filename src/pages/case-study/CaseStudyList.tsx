@@ -2,6 +2,8 @@
 
 import React from "react";
 import { motion, type Variants } from "framer-motion";
+import { Link } from "react-router-dom";
+import { caseStudies } from "../../data/caseStudies";
 
 // ---------- TEXT REVEAL ----------
 interface TextRevealProps {
@@ -49,52 +51,6 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className }) => {
   );
 };
 
-// ---------- DATA ----------
-const CASE_STUDIES = [
-  {
-    title: "E-Commerce Platform",
-    tags: ["Web Development", "UI/UX", "Branding"],
-    image: "/case-placeholder.jpg",
-    description:
-      "A scalable e-commerce platform built for high traffic, secure payments, and seamless user experience.",
-  },
-  {
-    title: "Healthcare Website",
-    tags: ["Front End", "Web Development"],
-    image: "/case-placeholder.jpg",
-    description:
-      "A modern healthcare portal focused on accessibility, performance, and patient engagement.",
-  },
-  {
-    title: "Fintech Mobile App",
-    tags: ["Mobile App", "UI Design"],
-    image: "/case-placeholder.jpg",
-    description:
-      "A secure fintech application with real-time analytics and smooth transaction flows.",
-  },
-  {
-    title: "Real Estate System",
-    tags: ["Custom Software", "Dashboard"],
-    image: "/case-placeholder.jpg",
-    description:
-      "A property management system for agents and property owners with real-time insights.",
-  },
-  {
-    title: "Logistics Platform",
-    tags: ["Web App", "Cloud"],
-    image: "/case-placeholder.jpg",
-    description:
-      "A logistics solution providing shipment tracking and performance monitoring.",
-  },
-  {
-    title: "EdTech Portal",
-    tags: ["Web Development", "UI/UX"],
-    image: "/case-placeholder.jpg",
-    description:
-      "An interactive learning platform with video streaming and course management.",
-  },
-];
-
 // ---------- COMPONENT ----------
 export default function CaseStudyList() {
   return (
@@ -119,59 +75,60 @@ export default function CaseStudyList() {
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-          {CASE_STUDIES.map((item, index) => (
-            <motion.div
-              key={`${item.title}-${index}`}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.8 }}
-              whileHover={{
-                scale: 1.03,
-                boxShadow: "0px 25px 60px -15px rgba(22, 248, 138, 0.35)",
-              }}
-              className="
-                group rounded-[32px]
-                border border-white/10
-                bg-white/5
-                backdrop-blur-2xl
-                overflow-hidden
-                transition-all
-              "
-            >
-              {/* Image */}
-              <div className="h-56 w-full overflow-hidden relative">
-                <div className="absolute inset-0 bg-[#20498A]/25 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                <img
-                  src={item.image}
-                  alt={`${item.title} case study`}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="p-8">
-                <h3 className="text-xl font-black text-white italic mb-3 tracking-tight group-hover:text-[#16F88A] transition-colors">
-                  {item.title}
-                </h3>
-
-                <p className="text-white/70 text-sm mb-6 leading-relaxed font-medium">
-                  {item.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full border border-white/10 text-[#16F88A] bg-white/5"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+          {caseStudies.map((item, index) => (
+            <Link to={`/case-studies/${item.slug}`} key={item.slug}>
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.8 }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0px 25px 60px -15px rgba(22, 248, 138, 0.35)",
+                }}
+                className="
+                  group rounded-[32px]
+                  border border-white/10
+                  bg-white/5
+                  backdrop-blur-2xl
+                  overflow-hidden
+                  transition-all
+                "
+              >
+                {/* Image */}
+                <div className="h-56 w-full overflow-hidden relative">
+                  <div className="absolute inset-0 bg-[#20498A]/25 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                  <img
+                    src={item.image}
+                    alt={`${item.title} case study`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
-              </div>
-            </motion.div>
+
+                {/* Content */}
+                <div className="p-8">
+                  <h3 className="text-xl font-black text-white italic mb-3 tracking-tight group-hover:text-[#16F88A] transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-white/70 text-sm mb-6 leading-relaxed font-medium">
+                    {item.short}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full border border-white/10 text-[#16F88A] bg-white/5"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
